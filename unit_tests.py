@@ -35,8 +35,8 @@ def test_all():
 
 	users = [user_1, user_2, user_3, user_4]
 
-	print(rec.recommend_me(me, users, n=1, intersection=True))
-	print(rec.recommend_me(me, users, n=1, intersection=False))
+	print(rec.recommend_me(me, users, n=4, intersection=True))
+	print(rec.recommend_me(me, users, n=4, intersection=False))
 
 def test_find_similarity():
 

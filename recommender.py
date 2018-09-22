@@ -37,14 +37,13 @@ class Recommender():
 		# accepts 2 vectors
 		# returns similarity metric between 2 vectors in the range [1, -1]
 
-
-		dot = np.dot(a, b)
-		cos_theta = dot / (LA.norm(a) * LA.norm(b))
-
-		if cos_theta != cos_theta:
+		if a.size == 0 or b.size == 0:
 			# if vector(s) is empty, then it will be nan, so return 0 (neutral similarity)
 			return 0
 
+		dot = np.dot(a, b)
+		cos_theta = dot / (LA.norm(a) * LA.norm(b))
+		
 		return cos_theta
 
 	def dicts_to_vectors(self, a, b, intersection=True):
