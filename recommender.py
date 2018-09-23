@@ -14,8 +14,8 @@ class Recommender():
 
 		similarity_values_with_keys = [self.find_similarity(me, user, intersection) for user in all_other_users]
 		similarity_values = np.asarray([similarity_values_with_keys[i][0] for i in range(len(similarity_values_with_keys))])
-
-		top_n = similarity_values.argsort()[-n:][::-1]
+		
+		top_n = similarity_values.argsort()[-n:]
 
 		if with_keys:
 			output = []
@@ -27,6 +27,7 @@ class Recommender():
 			return top_n
 
 		
+
 
 	# def find_shared_interests(self, user1, user2, n=1):
 	# 	# finds top n shared interests between two users
@@ -55,8 +56,15 @@ class Recommender():
 			# if vector(s) is empty, then it will be nan, so return 0 (neutral similarity)
 			return 0
 
+		norm_a = LA.norm(a)
+		norm_b = LA.norm(b)
+
+		if norm_a == 0 or norm_b == 0:
+			# if either vector has a magnitude of 0 (in the case of [0, 0, 0]), return 0
+			return 0
+
 		dot = np.dot(a, b)
-		cos_theta = dot / (LA.norm(a) * LA.norm(b))
+		cos_theta = dot / (norm_a * norm_b)
 
 		return cos_theta
 
@@ -75,24 +83,39 @@ class Recommender():
 			keys_a = set(a.keys())
 			keys_b = set(b.keys())
 			inter = keys_a & keys_b
-			keys = inter
 
 			for key in inter:
 
 				a_vector.append(a[key])
 				b_vector.append(b[key])
+				keys.append(key)
 
 		else:
 			# list of all keys
 			union = dict(b, **a).keys()
-			keys = union
 			
 			for key in union:
 				a_vector.append(a[key]) if key in a else a_vector.append(0)
 				b_vector.append(b[key]) if key in b else b_vector.append(0)
+				keys.append(key)
 
+		# keys = list(keys) # idk if this works. dict keys need to be in correct order
 
 		return np.asarray(a_vector), np.asarray(b_vector), keys
+
+	def find_most_shared_interests(self, user1, user2, n):
+
+		a, b, keys = self.dicts_to_vectors(user1, user2, intersection=True)
+
+		abs_distance = np.absolute(a - b)
+		top_n = abs_distance.argsort()[:n]
+
+		return [keys[index] for index in top_n]
+
+
+
+
+
 
 
 
