@@ -108,12 +108,12 @@ class Recommender():
 
 		a, b, keys = self.dicts_to_vectors(user1, user2, intersection=True)
 
-		# normalize vectors to get relative interests
-		a = a / LA.norm(a)
-		b = a / LA.norm(b)
+		a = a / np.sum(a)
+		b = b / np.sum(b)
 
 		abs_distance = np.absolute(a - b)
-
+		print(a, b)
+		print(keys)
 		top_n = abs_distance.argsort()[::-1][:n]
 
 		return [keys[index] for index in top_n]
