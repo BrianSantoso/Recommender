@@ -1,2 +1,2 @@
 # Recommender
-Collaborative Filtering algorithm
+Collaborative Filtering (CF) algorithm for recommending users and posts
