@@ -36,17 +36,29 @@ def test_all():
 		"american": -1
 	}
 
+	user_7 = {
+		"thai": 113,
+		"japanese": 112,
+		"american": 111
+	}
+
+	user_8 = {
+		"thai": 12,
+		"japanese": 8,
+		"american": 4
+	}
+
 	me = {
 		"thai": 3,
 		"japanese": 2,
 		"american": 1
 	}
 
-	users = [user_1, user_2, user_3, user_4, user_5, user_6]
+	users = [user_1, user_2, user_3, user_4, user_5, user_6, user_7, user_8]
 
 
-	print(rec.recommend_me(me, users, 6, intersection=True, with_keys=False))
-	print(rec.recommend_me(me, users, 6, intersection=False, with_keys=False))
+	print(rec.recommend_me(me, users, 8, intersection=True, with_keys=False))
+	print(rec.recommend_me(me, users, 8, intersection=False, with_keys=False))
 
 	# most similar user with strongest shared interests
 	index = rec.recommend_me(me, users, 1, intersection=True, with_keys=False)[0]
