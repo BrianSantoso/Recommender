@@ -69,6 +69,12 @@ class Recommender():
 
 		return cos_theta
 
+	def cosine_similarity_partial_derivative_Ai(self, a, b, i, precomputed_cosine_similarity=None):
+		if precomputed_cosine_similarity is not None:
+			return (b[i] / (LA.norm(a) * LA.norm(b))) - (a[i]/np.dot(a, a) * precomputed_cosine_similarity)
+		else:
+			return (b[i] / (LA.norm(a) * LA.norm(b))) - (a[i]/np.dot(a, a) * self.cosine_similarity(a, b))
+
 	def dicts_to_vectors(self, a, b, intersection=True):
 
 		# finds either the intersection or union of 2 vectors,
@@ -108,15 +114,41 @@ class Recommender():
 
 		a, b, keys = self.dicts_to_vectors(user1, user2, intersection=True)
 
-		a = a / np.sum(a)
-		b = b / np.sum(b)
+		precomputed_cosine_similarity = self.cosine_similarity(a, b)
+		b_partial_derivatives = [self.cosine_similarity_partial_derivative_Ai(b, a, i, precomputed_cosine_similarity) for i in range(len(keys))]
+		b_partial_derivatives = np.asarray(b_partial_derivatives)
 
-		abs_distance = np.absolute(a - b)
-		print(a, b)
-		print(keys)
-		top_n = abs_distance.argsort()[::-1][:n]
+		top_n = b_partial_derivatives.argsort()[::-1][:n]
 
 		return [keys[index] for index in top_n]
+
+		# a = a / np.sum(a)
+		# b = b / np.sum(b)
+
+		# abs_distance = np.absolute(a - b)
+		# # print(user1.keys(), user2.keys())
+		# # print(set(user1.keys()), set(user2.keys()))
+		# # print(set(user1.keys()) & set(user2.keys()))
+		# # print(a, b)
+		# top_n = abs_distance.argsort()[:n]
+
+		# return [keys[index] for index in top_n]
+
+		# # wrap each value in an array
+		# a = np.stack([a], axis=1)
+		# b = np.stack([b], axis=1)
+
+		# similarity_values = []
+		# for i in range(len(keys)):
+		# 	similarity = self.cosine_similarity(a[i], b[i])
+		# 	similarity_values.append(similarity)
+
+		# similarity_values = np.asarray(similarity_values)
+		# print(similarity_values)
+		# top_n = similarity_values.argsort()[::-1][:n]
+
+		# return [keys[index] for index in top_n]
+
 
 
 

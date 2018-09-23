@@ -42,13 +42,13 @@ def test_all():
 	}
 
 	user_8 = {
-		"thai": 13,
+		"thai": 12,
 		"japanese": 8,
 		"american": 4
 	}
 
 	me = {
-		"thai": 3,
+		"thai": 5,
 		"japanese": 2,
 		"american": 1
 	}
@@ -61,7 +61,7 @@ def test_all():
 
 	# most similar user with strongest shared interests
 	index = rec.recommend_me(me, users, 1, intersection=True, with_keys=False)[0]
-	print(index, rec.find_most_shared_interests(me, users[index], 1))
+	print(index, rec.find_most_shared_interests(me, users[index], 3))
 	# print("index 0:", rec.find_similarity(me, user_1))
 	# print("index 3:", rec.find_similarity(me, user_4))
 
