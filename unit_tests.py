@@ -31,9 +31,9 @@ def test_all():
 	}
 
 	user_6 = {
-		"thai": 3,
-		"japanese": 2,
-		"american": 1
+		"thai": -3,
+		"japanese": -2,
+		"american": -1
 	}
 
 	me = {

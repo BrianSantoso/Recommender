@@ -15,7 +15,8 @@ class Recommender():
 		similarity_values_with_keys = [self.find_similarity(me, user, intersection) for user in all_other_users]
 		similarity_values = np.asarray([similarity_values_with_keys[i][0] for i in range(len(similarity_values_with_keys))])
 		
-		top_n = similarity_values.argsort()[-n:]
+		# print("sim vals", similarity_values.argsort())
+		top_n = similarity_values.argsort()[::-1][:n]
 
 		if with_keys:
 			output = []
@@ -108,7 +109,7 @@ class Recommender():
 		a, b, keys = self.dicts_to_vectors(user1, user2, intersection=True)
 
 		abs_distance = np.absolute(a - b)
-		top_n = abs_distance.argsort()[:n]
+		top_n = abs_distance.argsort()[::-1][:n]
 
 		return [keys[index] for index in top_n]
 
